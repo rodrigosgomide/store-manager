@@ -1,4 +1,4 @@
-const { productsModel } = require('../models');
+const productsModel = require('../models/productsModel');
 const errorMessages = require('./Utils/errorMessages');
 const { productScheema } = require('./Utils/schemas');
 
