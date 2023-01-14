@@ -8,14 +8,19 @@ const findAll = async () => {
 
 const findById = async (productId) => {
   const product = await productsModel.findById(productId);
-  console.log(product);
   
   if (!product) throw errorMessages.PRODUCT_NOT_FOUND;
   
   return product;
 };
 
+const create = async (name) => {
+  const id = await productsModel.create(name);
+  return id;
+};
+
 module.exports = {
   findAll,
   findById,
+  create,
 };
