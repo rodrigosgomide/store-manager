@@ -1,5 +1,6 @@
 const { productsModel } = require('../models');
 const errorMessages = require('./Utils/errorMessages');
+const { productScheema } = require('./Utils/schemas');
 
 const findAll = async () => {
   const products = await productsModel.findAll();
@@ -9,12 +10,22 @@ const findAll = async () => {
 const findById = async (productId) => {
   const product = await productsModel.findById(productId);
   
-  if (!product) throw errorMessages.PRODUCT_NOT_FOUND;
+  if (!product) throw errorMessages.type.PRODUCT_NOT_FOUND;
   
   return product;
 };
 
 const create = async (name) => {
+  const { error } = productScheema.validate(name);
+  if (error) {
+    const { type } = error.details[0];
+    if (type === 'any.required') {
+      throw errorMessages.type.NAME_IS_REQUIRED;
+    }
+    if (type === 'string.min') {
+      throw errorMessages.type.NAME_LENGTH;
+    }
+  }
   const id = await productsModel.create(name);
   return id;
 };

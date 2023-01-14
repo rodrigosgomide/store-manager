@@ -15,10 +15,14 @@ try {
 }
 };
 
-const create = async (req, res) => {
+const create = async (req, res, next) => {
   const { name } = req.body;
-  const id = await productsService.create(name);
-  return res.status(201).json({ id, name });
+  try {
+    const id = await productsService.create({ name });
+    return res.status(201).json({ id, name });
+  } catch (error) {
+    next(error);
+  }
 };
 
 module.exports = {
