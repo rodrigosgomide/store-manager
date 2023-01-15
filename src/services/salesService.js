@@ -1,7 +1,20 @@
-const salesModels = require('../models/salesModel');
+const salesModel = require('../models/salesModel');
 const productsServices = require('./productsService');
 const { saleScheema } = require('./Utils/schemas');
-const { errorStatus, errorHandler } = require('./Utils/errorMessages');
+const { errorStatus, errorMessages, errorHandler } = require('./Utils/errorMessages');
+
+const findAll = async () => {
+  const sales = await salesModel.findAll();
+  return sales;
+};
+
+const findById = async (saleId) => {
+  const sale = await salesModel.findById(saleId);
+
+  if (sale.length === 0) throw errorHandler(errorMessages.SLAE_NOT_FOUND, errorStatus.NOT_FOUND);
+
+  return sale;
+};
 
 const create = async (sales) => {
   sales.map((sale) => {
@@ -22,10 +35,12 @@ const create = async (sales) => {
     }),
   );
 
-  const response = await salesModels.create(sales);
+  const response = await salesModel.create(sales);
   return response;
 };
 
 module.exports = {
+  findAll,
+  findById,
   create,
 };

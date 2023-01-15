@@ -6,6 +6,7 @@ const errorStatus = {
 
 const errorMessages = {
   PRODUCT_NOT_FOUND: 'Product not found',
+  SLAE_NOT_FOUND: 'Sale not found',
 };
   
 const errorHandler = (message, status) => ({ message, status });
