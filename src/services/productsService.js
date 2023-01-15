@@ -1,5 +1,6 @@
 const productsModel = require('../models/productsModel');
-const { errorStatus, errorMessages, errorHandler } = require('./Utils/errorMessages');
+const { errorMessages } = require('./Utils/errors');
+const { validateByScheema, validateById } = require('./Utils/validations');
 const { productScheema } = require('./Utils/schemas');
 
 const findAll = async () => {
@@ -7,29 +8,31 @@ const findAll = async () => {
   return products;
 };
 
-const findById = async (productId) => {
-  const product = await productsModel.findById(productId);
-  
-  if (!product) throw errorHandler(errorMessages.PRODUCT_NOT_FOUND, errorStatus.NOT_FOUND);
+const findById = async (id) => {
+  const product = await validateById(productsModel, id, errorMessages.PRODUCT_NOT_FOUND);
   
   return product;
 };
 
 const create = async (name) => {
-  const { error } = productScheema.validate(name);
-  if (error) {
-    const { type } = error.details[0];
-    if (type === 'any.required') {
-      throw errorHandler(error.message, errorStatus.IS_REQUIRED); 
-    }
-      throw errorHandler(error.message, errorStatus.INVALID_VALUE);
-  }
+  validateByScheema(productScheema, name);
+
   const id = await productsModel.create(name);
   return id;
+};
+
+const update = async (product) => {
+  await validateById(productsModel, product.id, errorMessages.PRODUCT_NOT_FOUND);
+  validateByScheema(productScheema, product);
+  
+  const response = await productsModel.update(product);
+  
+  return response;
 };
 
 module.exports = {
   findAll,
   findById,
   create,
+  update,
 };

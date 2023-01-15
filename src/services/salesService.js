@@ -1,37 +1,28 @@
 const salesModel = require('../models/salesModel');
-const productsServices = require('./productsService');
+const productsModel = require('../models/productsModel');
 const { saleScheema } = require('./Utils/schemas');
-const { errorStatus, errorMessages, errorHandler } = require('./Utils/errorMessages');
+const { errorMessages } = require('./Utils/errors');
+const { validateByScheema, validateById } = require('./Utils/validations');
 
 const findAll = async () => {
   const sales = await salesModel.findAll();
   return sales;
 };
 
-const findById = async (saleId) => {
-  const sale = await salesModel.findById(saleId);
-
-  if (sale.length === 0) throw errorHandler(errorMessages.SLAE_NOT_FOUND, errorStatus.NOT_FOUND);
-
+const findById = async (id) => {
+  const sale = validateById(salesModel, id, errorMessages.SLAE_NOT_FOUND);
   return sale;
 };
 
 const create = async (sales) => {
   sales.map((sale) => {
-    const { error } = saleScheema.validate(sale);
-    if (error) {
-      const { type } = error.details[0];
-      if (type === 'any.required') {
-        throw errorHandler(error.message, errorStatus.IS_REQUIRED);
-      }
-      throw errorHandler(error.message, errorStatus.INVALID_VALUE);
-    }
+    validateByScheema(saleScheema, sale);
     return null;
   });
 
   await Promise.all(
     sales.map(async (data) => {
-      await productsServices.findById(data.productId);
+      await validateById(productsModel, data.productId, errorMessages.PRODUCT_NOT_FOUND);
     }),
   );
 
