@@ -30,9 +30,16 @@ const update = async (product) => {
   return response;
 };
 
+const remove = async (id) => {
+  await validateById(productsModel, id, errorMessages.PRODUCT_NOT_FOUND);
+
+  await productsModel.remove(id);
+};
+
 module.exports = {
   findAll,
   findById,
   create,
   update,
+  remove,
 };
