@@ -9,8 +9,6 @@ const productsController = require('../../../src/controllers/productsController'
 const productsService = require('../../../src/services/productsService')
 
 const { allProducts } = require('../mocks/products.mock')
-const errorMessages = require('../../../src/services/Utils/errorMessages')
-
 
 describe('Testa os serviços de produtos', function () {
 
