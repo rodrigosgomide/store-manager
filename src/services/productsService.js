@@ -1,4 +1,4 @@
-const productsModel = require('../models/productsModel');
+const { productsModel } = require('../models');
 const { errorMessages } = require('./Utils/errors');
 const { validateByScheema, validateById } = require('./Utils/validations');
 const { productScheema } = require('./Utils/schemas');

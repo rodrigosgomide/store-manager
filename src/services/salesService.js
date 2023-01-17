@@ -1,5 +1,5 @@
-const salesModel = require('../models/salesModel');
-const productsModel = require('../models/productsModel');
+const { salesModel } = require('../models');
+const { productsModel } = require('../models');
 const { saleScheema } = require('./Utils/schemas');
 const { errorMessages } = require('./Utils/errors');
 const { validateByScheema, validateById } = require('./Utils/validations');

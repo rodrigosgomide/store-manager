@@ -1,22 +1,11 @@
 const express = require('express');
-const productsController = require('./controllers/productsController');
-const salesController = require('./controllers/salesController');
+const { productsRoutes, salesRoutes } = require('./routes');
 
 const app = express();
 app.use(express.json());
 
-app.get('/products', productsController.findAll);
-app.post('/products', productsController.create);
-app.get('/products/:id', productsController.findById);
-app.put('/products/:id', productsController.update);
-app.delete('/products/:id', productsController.remove);
-
-app.post('/sales', salesController.create);
-app.get('/sales', salesController.findAll);
-app.get('/sales/:id', salesController.findById);
-
-// app.use('/products', productsRoutes);
-// app.use('/sales', salesRoutes);
+app.use('/products', productsRoutes);
+app.use('/sales', salesRoutes);
 
 app.use((error, _req, res, _next) => {
   if (error.status) {
