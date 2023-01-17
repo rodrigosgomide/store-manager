@@ -5,11 +5,6 @@ const salesController = require('./controllers/salesController');
 const app = express();
 app.use(express.json());
 
-// não remova esse endpoint, é para o avaliador funcionar
-app.get('/', (_request, response) => {
-  response.send();
-});
-
 app.get('/products', productsController.findAll);
 app.post('/products', productsController.create);
 app.get('/products/:id', productsController.findById);
@@ -28,6 +23,11 @@ app.use((error, _req, res, _next) => {
     return res.status(error.status).json({ message: error.message });
   }
   res.status(500).json({ message: 'internal server error' });
+});
+
+// não remova esse endpoint, é para o avaliador funcionar
+app.get('/', (_request, response) => {
+  response.send();
 });
 
 // não remova essa exportação, é para o avaliador funcionar
