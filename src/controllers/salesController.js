@@ -25,8 +25,19 @@ try {
 }
 };
 
+const remove = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    await salesService.remove(id);
+    res.status(204).json();
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   findAll,
   findById,
   create,
+  remove,
 };

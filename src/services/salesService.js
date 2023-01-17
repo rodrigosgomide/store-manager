@@ -30,8 +30,15 @@ const create = async (sales) => {
   return response;
 };
 
+const remove = async (id) => {
+  await validateById(salesModel, id, errorMessages.SLAE_NOT_FOUND);
+
+  await salesModel.remove(id);
+};
+
 module.exports = {
   findAll,
   findById,
   create,
+  remove,
 };
