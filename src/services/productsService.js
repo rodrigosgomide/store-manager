@@ -14,6 +14,11 @@ const findById = async (id) => {
   return product;
 };
 
+const findBySearch = async (searchParam) => {
+    const products = await productsModel.findBySearch(searchParam);
+    return products;
+};
+
 const create = async (name) => {
   validateByScheema(productScheema, name);
 
@@ -39,6 +44,7 @@ const remove = async (id) => {
 module.exports = {
   findAll,
   findById,
+  findBySearch,
   create,
   update,
   remove,

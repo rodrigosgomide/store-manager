@@ -2,13 +2,22 @@ const connection = require('./connection');
 
 const findAll = async () => {
   const [products] = await connection.execute('SELECT * FROM StoreManager.products');
+  
   return products;
 };
 
 const findById = async (id) => {
   const [[product]] = await connection
-      .execute('SELECT * FROM StoreManager.products WHERE id = ?', [id]);
+    .execute('SELECT * FROM StoreManager.products WHERE id = ?', [id]);
+  
   return product;
+};
+
+const findBySearch = async (searchParam) => {
+  const [products] = await connection
+    .execute('SELECT * FROM StoreManager.products WHERE name LIKE ?', [`%${searchParam}%`]);
+  
+  return products;
 };
 
 const create = async (name) => {
@@ -33,6 +42,7 @@ const remove = async (id) => {
 module.exports = {
   findAll,
   findById,
+  findBySearch,
   create,
   update,
   remove,

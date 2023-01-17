@@ -15,6 +15,16 @@ try {
 }
 };
 
+const findBySearch = async (req, res, next) => {
+  const { q } = req.query;
+  try {
+    const products = await productsService.findBySearch(q);
+    return res.status(200).json(products);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const create = async (req, res, next) => {
   const { name } = req.body;
   try {
@@ -49,6 +59,7 @@ const remove = async (req, res, next) => {
 module.exports = {
   findAll,
   findById,
+  findBySearch,
   create,
   update,
   remove,
