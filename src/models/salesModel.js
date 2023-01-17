@@ -32,6 +32,16 @@ const create = async (sales) => {
   return { id: 3, itemsSold: sales };
 };
 
+const update = async ({ saleId, items }) => {
+  const query = 'UPDATE StoreManager.sales_products SET '
+    + 'product_id = ?, quantity = ? WHERE sale_id = ? AND product_id = ?;';
+  
+  const [[result]] = await Promise.all(items.map((iten) => connection
+    .execute(query, [iten.productId, iten.quantity, saleId, iten.productId])));
+
+  if (result.affectedRows > 0) return { saleId, itemsUpdated: items };
+};
+
 const remove = async (id) => {
   await connection
     .execute('DELETE FROM StoreManager.sales WHERE id = ?; ', [id]);
@@ -41,5 +51,6 @@ module.exports = {
   findAll,
   findById,
   create,
+  update,
   remove,
 };

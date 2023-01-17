@@ -25,6 +25,18 @@ try {
 }
 };
 
+const update = async (req, res, next) => {
+  const items = req.body;
+  const { id } = req.params;
+  
+  try {
+    const response = await salesService.update({ saleId: id, items });
+    res.status(200).json(response);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const remove = async (req, res, next) => {
   const { id } = req.params;
   try {
@@ -39,5 +51,6 @@ module.exports = {
   findAll,
   findById,
   create,
+  update,
   remove,
 };

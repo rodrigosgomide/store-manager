@@ -30,6 +30,23 @@ const create = async (sales) => {
   return response;
 };
 
+const update = async ({ saleId, items }) => {
+  await validateById(salesModel, saleId, errorMessages.SLAE_NOT_FOUND);
+   items.forEach((iten) => {
+     validateByScheema(saleScheema, iten);
+   });
+
+  await Promise.all(
+    items.map(async (iten) => {
+      await validateById(productsModel, iten.productId, errorMessages.PRODUCT_NOT_FOUND);
+    }),
+);
+
+  const response = await salesModel.update({ saleId, items });
+
+  return response;
+};
+
 const remove = async (id) => {
   await validateById(salesModel, id, errorMessages.SLAE_NOT_FOUND);
 
@@ -40,5 +57,6 @@ module.exports = {
   findAll,
   findById,
   create,
+  update,
   remove,
 };
