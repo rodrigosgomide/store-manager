@@ -9,6 +9,11 @@ const allProducts = [
   }
 ]
 
+const productToUpdate = {
+  id: 999,
+  name: 'Camisa do Cruzeiro',
+}
+
 const newProduct = [
   {
     name: 'Camisa do Cruzeiro',
@@ -53,5 +58,6 @@ module.exports = {
   newProduct,
   items,
   findAllSales,
-  mysqlResponse
+  mysqlResponse,
+  productToUpdate
 }
