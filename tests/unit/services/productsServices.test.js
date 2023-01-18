@@ -3,7 +3,7 @@ const productsService = require('../../../src/services/productsService')
 const { expect } = require('chai')
 const sinon = require('sinon')
 
-const { allProducts } = require('../mocks/products.mock')
+const { allProducts } = require('../mocks/mockData')
 
 
 describe('Testa os serviços de produtos', function () {

@@ -27,24 +27,27 @@ const create = async (sales) => {
 
   const query = 'INSERT INTO StoreManager.sales_products'
     + '(sale_id, product_id, quantity) VALUES (?,?,?)';
-  await sales.map((sale) => connection.execute(query, [insertId, sale.productId, sale.quantity]));
+  await Promise.all(
+    sales.map((sale) => connection.execute(query, [insertId, sale.productId, sale.quantity])),
+  );
 
-  return { id: 3, itemsSold: sales };
+  return { id: insertId, itemsSold: sales };
 };
 
 const update = async ({ saleId, items }) => {
   const query = 'UPDATE StoreManager.sales_products SET '
     + 'product_id = ?, quantity = ? WHERE sale_id = ? AND product_id = ?;';
   
-  const [[result]] = await Promise.all(items.map((iten) => connection
+  const [[{ affectedRows }]] = await Promise.all(items.map((iten) => connection
     .execute(query, [iten.productId, iten.quantity, saleId, iten.productId])));
 
-  if (result.affectedRows > 0) return { saleId, itemsUpdated: items };
+  if (affectedRows > 0) return { saleId, itemsUpdated: items };
 };
 
 const remove = async (id) => {
-  await connection
+  const [{ affectedRows }] = await connection
     .execute('DELETE FROM StoreManager.sales WHERE id = ?; ', [id]);
+  if (affectedRows > 0) return { message: 'The sale has been deleted' };
 };
 
 module.exports = {
