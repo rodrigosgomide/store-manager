@@ -50,7 +50,8 @@ const update = async ({ saleId, items }) => {
 const remove = async (id) => {
   await validateById(salesModel, id, errorMessages.SLAE_NOT_FOUND);
 
-  await salesModel.remove(id);
+  const result = await salesModel.remove(id);
+  return result;
 };
 
 module.exports = {

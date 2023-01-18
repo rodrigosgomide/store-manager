@@ -20,6 +20,17 @@ const newProduct = [
   },
 ]
 
+const newSale = [
+  {
+    productId: 1,
+    quantity: 1
+  },
+  {
+    productId: 2,
+    quantity: 5
+  }
+]
+
 const items = [
   {
     productId: 100,
@@ -59,5 +70,6 @@ module.exports = {
   items,
   findAllSales,
   mysqlResponse,
-  productToUpdate
+  productToUpdate,
+  newSale,
 }
